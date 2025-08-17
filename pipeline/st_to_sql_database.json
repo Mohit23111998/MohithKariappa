@@ -1,0 +1,58 @@
+{
+	"name": "st_to_sql_database",
+	"properties": {
+		"activities": [
+			{
+				"name": "st_to_sql_database",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"value": "@json('{\n            \"type\": \"TabularTranslator\",\n            \"mappings\": [\n                {\n                    \"source\": {\n                        \"name\": \"OrderID\",\n                        \"type\": \"String\",\n                        \"physicalType\": \"String\"\n                    },\n                    \"sink\": {\n                        \"name\": \"OrderID\",\n                        \"type\": \"String\",\n                        \"physicalType\": \"char\"\n                    }\n                },\n                {\n                    \"source\": {\n                        \"name\": \"Customer\",\n                        \"type\": \"String\",\n                        \"physicalType\": \"String\"\n                    },\n                    \"sink\": {\n                        \"name\": \"Customer\",\n                        \"type\": \"String\",\n                        \"physicalType\": \"varchar\"\n                    }\n                },\n                {\n                    \"source\": {\n                        \"name\": \"Item\",\n                        \"type\": \"String\",\n                        \"physicalType\": \"String\"\n                    },\n                    \"sink\": {\n                        \"name\": \"Item\",\n                        \"type\": \"String\",\n                        \"physicalType\": \"varchar\"\n                    }\n                },\n                {\n                    \"source\": {\n                        \"name\": \"Quantity\",\n                        \"type\": \"String\",\n                        \"physicalType\": \"String\"\n                    },\n                    \"sink\": {\n                        \"name\": \"Quantity\",\n                        \"type\": \"Int32\",\n                        \"physicalType\": \"int\"\n                    }\n                },\n                {\n                    \"source\": {\n                        \"name\": \"Price\",\n                        \"type\": \"String\",\n                        \"physicalType\": \"String\"\n                    },\n                    \"sink\": {\n                        \"name\": \"Price\",\n                        \"type\": \"Double\",\n                        \"physicalType\": \"float\"\n                    }\n                },\n                {\n                    \"source\": {\n                        \"name\": \"OrderDate\",\n                        \"type\": \"String\",\n                        \"physicalType\": \"String\"\n                    },\n                    \"sink\": {\n                        \"name\": \"OrderDate\",\n                        \"type\": \"DateTime\",\n                        \"physicalType\": \"date\"\n                    }\n                }\n            ],\n            \"typeConversion\": true,\n            \"typeConversionSettings\": {\n                \"allowDataTruncation\": true,\n                \"treatBooleanAsNumber\": false\n            }\n        }')",
+						"type": "Expression"
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DelimitedText1",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "AzureSqlTable1",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2025-08-15T05:22:16Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
